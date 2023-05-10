@@ -15,7 +15,7 @@ public class RequestHandler implements HttpHandler {
  }
 
  /*
-  * This method handles all requestes by delegation
+  * This implemented method handles all requestes by delegation
   */
  public void handle(HttpExchange httpExchange) throws IOException {
    String response = "Request Received";
@@ -27,7 +27,11 @@ public class RequestHandler implements HttpHandler {
       response = handleGet(httpExchange);
     } else if (method.equals("POST")) {
       response = handlePost(httpExchange);
-    } else {
+    } else if (method.equals("PUT")) {
+      response = handlePut(httpExchange);
+    } else if (method.equals("DELETE")){
+      response = handleDelete(httpExchange);
+    }else {
       throw new Exception("Not Valid Request Method");
     }
   } catch (Exception e) {
@@ -89,9 +93,76 @@ public class RequestHandler implements HttpHandler {
     String response = "Posted entry {" + language + ", " + year + "}";
     System.out.println(response);
     scanner.close();
- 
- 
+  
     return response;
   }
+
+  /*
+   * Handl put request, and print different information about wheter
+   * the new entries exists or not
+   */
+  private String handlePut(HttpExchange httpExchange) throws IOException {
+    InputStream inStream = httpExchange.getRequestBody();
+    Scanner scanner = new Scanner(inStream);
+    String postData = scanner.nextLine();
+    String language = postData.substring(
+      0,
+      postData.indexOf(",")
+    ), year = postData.substring(postData.indexOf(",") + 1);
  
+ 
+    // Store data in hashmap
+    String oldyear = data.get(language);
+    if(oldyear == null){
+      data.put(language, year);
+ 
+      String response = "Added entry {" + language + ", " + year + "}";
+      System.out.println(response);
+      scanner.close();
+      return response;
+    }else{
+      data.put(language, year);
+ 
+      String response = "Updated entry {" + language + ", " + year + 
+      "} (previous year:" + oldyear +")";
+      System.out.println(response);
+      scanner.close();
+      return response;
+    }
+  }
+
+/*
+   * Handl put request, and print different information about wheter
+   * the new entries exists or not
+   */
+  private String handleDelete(HttpExchange httpExchange) throws IOException {
+    InputStream inStream = httpExchange.getRequestBody();
+    Scanner scanner = new Scanner(inStream);
+    String postData = scanner.nextLine();
+    String language = postData.substring(
+      0,
+      postData.indexOf(",")
+    ), year = postData.substring(postData.indexOf(",") + 1);
+ 
+ 
+    // Store data in hashmap
+    String oldyear = data.get(language);
+    if(oldyear == null){
+      data.put(language, year);
+ 
+      String response = "Added entry {" + language + ", " + year + "}";
+      System.out.println(response);
+      scanner.close();
+      return response;
+    }else{
+      data.put(language, year);
+ 
+      String response = "Updated entry {" + language + ", " + year + 
+      "} (previous year:" + oldyear +")";
+      System.out.println(response);
+      scanner.close();
+      return response;
+    }
+  }
+
 }
