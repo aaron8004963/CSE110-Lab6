@@ -136,33 +136,17 @@ public class RequestHandler implements HttpHandler {
    * the new entries exists or not
    */
   private String handleDelete(HttpExchange httpExchange) throws IOException {
-    InputStream inStream = httpExchange.getRequestBody();
-    Scanner scanner = new Scanner(inStream);
-    String postData = scanner.nextLine();
-    String language = postData.substring(
-      0,
-      postData.indexOf(",")
-    ), year = postData.substring(postData.indexOf(",") + 1);
- 
- 
-    // Store data in hashmap
-    String oldyear = data.get(language);
-    if(oldyear == null){
-      data.put(language, year);
- 
-      String response = "Added entry {" + language + ", " + year + "}";
-      System.out.println(response);
-      scanner.close();
-      return response;
-    }else{
-      data.put(language, year);
- 
-      String response = "Updated entry {" + language + ", " + year + 
-      "} (previous year:" + oldyear +")";
-      System.out.println(response);
-      scanner.close();
-      return response;
-    }
+    String response = "No data found for language";
+    URI uri = httpExchange.getRequestURI();
+    String query = uri.getRawQuery();
+      if (query != null) {
+      String value = query.substring(query.indexOf("=") + 1);
+      String year = data.remove(value); // Retrieve data from hashmap
+        if (year != null) {
+          response = "Delete entry {" + value + "," + year + "}";
+        } else {
+        }
+      }
+    return response;
   }
-
 }

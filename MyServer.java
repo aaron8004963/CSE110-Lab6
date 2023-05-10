@@ -31,6 +31,8 @@ public class MyServer {
 
     //set the context
     server.createContext("/",  new RequestHandler(data));
+    //set the context of name
+    server.createContext("/name",  new myHandler(data));
     //set the executor
     server.setExecutor(threadPoolExecutor);
     //start the server
