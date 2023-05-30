@@ -79,7 +79,7 @@ class ButtonPanel extends JPanel {
 
 public class MyServerUI extends JFrame {
 
-  public final String URL = "http://localhost:8100/";
+  public final String URL = "http://localhost:8102/";
 
   private JButton postButton, getButton, putButton, deleteButton;
   private FieldPanel fieldPanel;

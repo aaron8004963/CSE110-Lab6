@@ -10,7 +10,7 @@ public class MyServer {
 
 
  // initialize server port and hostname
- private static final int SERVER_PORT = 8100;
+ private static final int SERVER_PORT = 8102;
  private static final String SERVER_HOSTNAME = "localhost";
 
 
